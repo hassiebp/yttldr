@@ -11,6 +11,8 @@ import {
   Loader2,
   Youtube,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { GetVideoDataResponse } from "@/types";
 import { isValidYouTubeUrl } from "@/utils/youtube";
-import Link from "next/link";
 
 export default function Home() {
   const {
@@ -81,16 +82,25 @@ export default function Home() {
         <div className="flex flex-col gap-4 md:gap-4 max-w-7xl mx-auto">
           {!videoData ? (
             <div className="flex flex-col items-center justify-center min-h-[80vh]">
-              <h1
+              <div
+                className="flex items-center justify-center gap-4 cursor-pointer hover:opacity-80 transition-opacity"
                 onClick={() => {
                   setMessages([]);
                   setError(null);
                   setVideoData(null);
                 }}
-                className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl cursor-pointer hover:opacity-80 transition-opacity text-center"
               >
-                yttldr
-              </h1>
+                <Image
+                  src="/yttldr-logo.webp"
+                  alt="yttldr logo"
+                  width={64}
+                  height={64}
+                  className="w-12 h-12 sm:w-16 sm:h-16"
+                />
+                <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-center">
+                  yttldr
+                </h1>
+              </div>
               <p className="mt-3 mb-6 md:mt-4 md:mb-8 text-base md:text-lg text-muted-foreground/90 leading-relaxed max-w-xl mx-auto text-center px-4">
                 Get instant YouTube video summaries. Ask questions to learn
                 more.
@@ -137,16 +147,23 @@ export default function Home() {
             <div className="mx-auto w-full">
               <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b sm:static sm:bg-transparent sm:backdrop-blur-none sm:border-none">
                 <div className="container mx-auto px-4 py-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
-                    <div className="flex-shrink-0">
-                      <h1
-                        onClick={() => {
-                          setMessages([]);
-                          setError(null);
-                          setVideoData(null);
-                        }}
-                        className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-xl sm:text-2xl cursor-pointer hover:opacity-80 transition-opacity text-center sm:text-left"
-                      >
+                  <div
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => {
+                      setMessages([]);
+                      setError(null);
+                      setVideoData(null);
+                    }}
+                  >
+                    <div className="flex-shrink-0 flex items-center gap-1">
+                      <Image
+                        src="/yttldr-logo.webp"
+                        alt="yttldr logo"
+                        width={64}
+                        height={64}
+                        className="w-3 h-3 sm:w-8 sm:h-8"
+                      />
+                      <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-xl sm:text-2xl text-center sm:text-left">
                         yttldr
                       </h1>
                     </div>
