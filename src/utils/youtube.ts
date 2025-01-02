@@ -3,7 +3,7 @@ import { Innertube } from "youtubei.js/web";
 
 export function extractVideoId(url: string) {
   const regExp =
-    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    /^.*((youtu\.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*)|youtu\.be\/([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[7].length === 11 ? match[7] : null;
 }
