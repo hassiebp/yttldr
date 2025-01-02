@@ -4,7 +4,13 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 import { useChat } from "ai/react";
-import { ArrowRight, ArrowUpRight, Loader2, Youtube } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Github,
+  Loader2,
+  Youtube,
+} from "lucide-react";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -12,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { GetVideoDataResponse } from "@/types";
 import { isValidYouTubeUrl } from "@/utils/youtube";
+import Link from "next/link";
 
 export default function Home() {
   const {
@@ -28,54 +35,50 @@ export default function Home() {
   const [videoData, setVideoData] = React.useState<GetVideoDataResponse | null>(
     null
   );
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
+  // Auto scroll chat box when streaming
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
   React.useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   async function handleVideoSubmit(formData: FormData) {
-    setIsPending(true);
-    setError(null);
-    setMessages([]);
+    try {
+      setIsPending(true);
+      setError(null);
+      setMessages([]);
 
-    const url = formData.get("url") as string;
+      const url = formData.get("url") as string;
 
-    if (!isValidYouTubeUrl(url)) {
-      setError("Please enter a valid YouTube URL");
-      setIsPending(false);
+      if (!isValidYouTubeUrl(url))
+        throw new Error("Please enter a valid YouTube URL");
 
-      return;
-    }
+      const result = (await (
+        await fetch(`/api/video?url=${url}`)
+      ).json()) as GetVideoDataResponse;
 
-    const result = (await (
-      await fetch(`/api/video?url=${url}`)
-    ).json()) as GetVideoDataResponse;
-
-    if ("error" in result) {
-      setError(result.error ?? null);
-    } else {
       setVideoData(result);
       const message = {
         ...result.summaryUserMessage,
-        id: Math.floor(Math.random() * 100000).toString(),
+        id: crypto.randomUUID(),
       };
 
-      // Triggers the summary generation
+      // Trigger the summary generation
       append(message);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred");
+    } finally {
+      setIsPending(false);
     }
-
-    setIsPending(false);
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted">
       <main className="container mx-auto px-4 py-4 md:py-8">
-        <div className="flex flex-col gap-4 md:gap-8 max-w-7xl mx-auto">
+        <div className="flex flex-col gap-4 md:gap-4 max-w-7xl mx-auto">
           {!videoData ? (
             <div className="flex flex-col items-center justify-center min-h-[80vh]">
               <h1
@@ -191,13 +194,18 @@ export default function Home() {
 
           {videoData && (
             <div className="grid lg:grid-cols-2 gap-4 md:gap-6 w-full mt-[100px] sm:mt-0">
-              <Card className="animate-in fade-in-0 duration-300">
+              <Card className="animate-in fade-in-0 duration-300 lg:h-[calc(100vh-200px)]">
                 <CardHeader className="bg-muted/50">
                   <span className="flex items-center gap-2">
                     <Youtube className="h-4 w-4 text-primary" />{" "}
-                    <h2 className="font-semibold text-base sm:text-lg line-clamp-2 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                    <Link
+                      href={`https://www.youtube.com/watch?v=${videoData.videoId}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-semibold text-base sm:text-lg line-clamp-2 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+                    >
                       {videoData.title}
-                    </h2>
+                    </Link>
                   </span>
                   <a
                     href={videoData.authorUrl}
@@ -224,7 +232,7 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="animate-in fade-in-0 duration-300">
+              <Card className="animate-in fade-in-0 duration-300 h-[calc(100vh-200px)]">
                 <CardHeader>
                   <CardTitle className="text-base sm:text-lg">
                     Summary
@@ -234,9 +242,9 @@ export default function Home() {
                     learn more.
                   </p>
                 </CardHeader>
-                <CardContent className="relative">
+                <CardContent className="relative h-[calc(100%-140px)]">
                   <div
-                    className={`flex flex-col space-y-4 h-[300px] sm:h-[400px] ${
+                    className={`flex flex-col space-y-4 h-[calc(100%-80px)] ${
                       !isLoading ? "overflow-y-auto" : "overflow-hidden"
                     } mb-16 px-1`}
                   >
@@ -295,7 +303,18 @@ export default function Home() {
           )}
 
           <footer className="text-center text-xs sm:text-sm text-muted-foreground mt-4">
-            <p>Made in 1 day with AI 😃</p>
+            <p className="flex items-center justify-center gap-1">
+              Made in 1 day with AI 🤪 by
+              <a
+                href="https://github.com/hassiebp"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+              >
+                <Github className="h-3 w-3" />
+                hassiebp
+              </a>
+            </p>
           </footer>
         </div>
       </main>

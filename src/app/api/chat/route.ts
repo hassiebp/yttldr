@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   });
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: openai("gpt-4o-2024-11-20"),
     system: prompt.prompt[0].content,
     messages,
     experimental_telemetry: {
