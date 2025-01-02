@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
         {
           error: "Invalid YouTube URL",
         },
-        { status: 400 }
+        { status: 400 },
       );
 
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     } = await getVideoMetadata(videoUrl);
 
     // Get transcript
-    const transcript = await getTranscript(videoUrl);
+    const transcript = await getTranscript(videoId);
 
     // Get initial summmarization user message
     const prompt = await langfuse.getPrompt("summarizer", undefined, {
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
       {
         error: "Failed to process video",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

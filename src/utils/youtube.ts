@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { YoutubeTranscript } from "youtube-transcript";
+import { Innertube } from "youtubei.js/web";
 
 export function extractVideoId(url: string) {
   const regExp =
@@ -12,10 +12,26 @@ export function isValidYouTubeUrl(url: string) {
   return Boolean(extractVideoId(url));
 }
 
-export async function getTranscript(youtubeUrl: string) {
-  return YoutubeTranscript.fetchTranscript(youtubeUrl).then((res) =>
-    res.map((i) => i.text.replace(/&amp;#39;/g, "'")).join(" ")
-  );
+export async function getTranscript(videoId: string) {
+  try {
+    const youtube = await Innertube.create({
+      lang: "en",
+      location: "US",
+      retrieve_player: false,
+    });
+
+    const info = await youtube.getInfo(videoId);
+    const transcriptData = await info.getTranscript();
+    const transcript =
+      transcriptData?.transcript?.content?.body?.initial_segments.map(
+        (segment) => segment.snippet.text
+      );
+
+    return transcript;
+  } catch (error) {
+    console.error("Error fetching transcript:", error);
+    throw error;
+  }
 }
 
 export async function getVideoMetadata(
