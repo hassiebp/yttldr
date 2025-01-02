@@ -23,9 +23,9 @@ export async function getTranscript(videoId: string) {
     const info = await youtube.getInfo(videoId);
     const transcriptData = await info.getTranscript();
     const transcript =
-      transcriptData?.transcript?.content?.body?.initial_segments.map(
-        (segment) => segment.snippet.text
-      );
+      transcriptData?.transcript?.content?.body?.initial_segments
+        .map((segment) => segment.snippet.text)
+        .join(" ");
 
     return transcript;
   } catch (error) {
@@ -35,10 +35,10 @@ export async function getTranscript(videoId: string) {
 }
 
 export async function getVideoMetadata(
-  youtubeUrl: string
+  youtubeUrl: string,
 ): Promise<YoutubeVideoMetadata> {
   const result = await fetch(
-    `https://www.youtube.com/oembed?url=${youtubeUrl}`
+    `https://www.youtube.com/oembed?url=${youtubeUrl}`,
   );
   const data = await result.json();
 

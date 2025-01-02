@@ -14,17 +14,11 @@ const langfuse = new Langfuse();
 export async function GET(req: NextRequest) {
   try {
     const url = req.nextUrl.searchParams.get("url");
-    if (!url) return NextResponse.json({ error: "Missing url", status: 400 });
+    if (!url) throw new Error("Missing url");
 
     // Extract video id
     const videoId = extractVideoId(url);
-    if (!videoId)
-      return NextResponse.json(
-        {
-          error: "Invalid YouTube URL",
-        },
-        { status: 400 },
-      );
+    if (!videoId) throw new Error("Invalid YouTube URL");
 
     const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
@@ -37,6 +31,7 @@ export async function GET(req: NextRequest) {
 
     // Get transcript
     const transcript = await getTranscript(videoId);
+    if (!transcript) throw new Error("Could not get transcript");
 
     // Get initial summmarization user message
     const prompt = await langfuse.getPrompt("summarizer", undefined, {
@@ -62,9 +57,11 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        error: "Failed to process video",
+        error: `Failed to process video: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
