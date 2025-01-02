@@ -118,7 +118,7 @@ export default function Home() {
                         aria-label="YouTube video URL"
                         autoComplete="off"
                         spellCheck="false"
-                        className="w-full pr-24 sm:pr-32 h-12 text-sm sm:text-base"
+                        className="w-full pr-24 sm:pr-32 h-12 text-sm sm:text-base [font-size:16px]"
                         disabled={isPending}
                       />
                       <Button
@@ -178,7 +178,7 @@ export default function Home() {
                           name="url"
                           placeholder="Enter new YouTube URL..."
                           required
-                          className="w-full h-10 pr-12"
+                          className="w-full h-10 pr-12 [font-size:16px]"
                           disabled={isPending}
                         />
                         <Button
@@ -295,7 +295,7 @@ export default function Home() {
                         value={input}
                         onChange={handleInputChange}
                         placeholder="Ask a question..."
-                        className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm"
+                        className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm [font-size:16px]"
                         disabled={isLoading}
                       />
                       <Button
