@@ -24,8 +24,8 @@ export async function POST(req: Request) {
         langfusePrompt: prompt.toJSON(),
       },
     },
-    onFinish: () => waitUntil(langfuseExporter.forceFlush()),
   });
 
+  waitUntil(langfuseExporter.forceFlush());
   return result.toDataStreamResponse();
 }
