@@ -95,7 +95,7 @@ export default function Home() {
                   alt="yttldr logo"
                   width={64}
                   height={64}
-                  className="w-12 h-12 sm:w-16 sm:h-16"
+                  className="w-12 h-12 sm:w-16 sm:h-16 rounded"
                 />
                 <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-center">
                   yttldr
@@ -161,7 +161,7 @@ export default function Home() {
                         alt="yttldr logo"
                         width={64}
                         height={64}
-                        className="w-3 h-3 sm:w-8 sm:h-8"
+                        className="w-3 h-3 sm:w-8 sm:h-8 rounded"
                       />
                       <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-xl sm:text-2xl text-center sm:text-left">
                         yttldr
