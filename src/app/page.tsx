@@ -34,7 +34,7 @@ export default function Home() {
   const [isPending, setIsPending] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [videoData, setVideoData] = React.useState<GetVideoDataResponse | null>(
-    null
+    null,
   );
 
   // Auto scroll chat box when streaming
@@ -147,15 +147,15 @@ export default function Home() {
             <div className="mx-auto w-full">
               <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b sm:static sm:bg-transparent sm:backdrop-blur-none sm:border-none">
                 <div className="container mx-auto px-4 py-4">
-                  <div
-                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 cursor-pointer hover:opacity-80 transition-opacity"
-                    onClick={() => {
-                      setMessages([]);
-                      setError(null);
-                      setVideoData(null);
-                    }}
-                  >
-                    <div className="flex-shrink-0 flex items-center gap-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+                    <div
+                      className="flex-shrink-0 flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => {
+                        setMessages([]);
+                        setError(null);
+                        setVideoData(null);
+                      }}
+                    >
                       <Image
                         src="/yttldr-logo.webp"
                         alt="yttldr logo"
