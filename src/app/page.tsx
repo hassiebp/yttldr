@@ -57,11 +57,16 @@ export default function Home() {
       if (!isValidYouTubeUrl(url))
         throw new Error("Please enter a valid YouTube URL");
 
-      const result = (await (
-        await fetch(`/api/video?url=${url}`)
-      ).json()) as GetVideoDataResponse;
+      const fetchResult = await fetch(`/api/video?url=${url}`);
 
+      if (!fetchResult.ok)
+        throw Error(
+          "Failed to process video. It likely has no transcript. Please try another video.",
+        );
+
+      const result = (await fetchResult.json()) as GetVideoDataResponse;
       setVideoData(result);
+
       const message = {
         ...result.summaryUserMessage,
         id: crypto.randomUUID(),
