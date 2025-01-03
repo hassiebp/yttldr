@@ -16,7 +16,6 @@
     "@radix-ui/react-dropdown-menu": "^2.1.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
-    "@radix-ui/react-toast": "^1.2.4",
     "@vercel/functions": "^1.5.2",
     "@vercel/otel": "^1.10.0",
     "ai": "^4.0.22",
