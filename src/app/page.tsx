@@ -34,7 +34,7 @@ export default function Home() {
   const [isPending, setIsPending] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [videoData, setVideoData] = React.useState<GetVideoDataResponse | null>(
-    null,
+    null
   );
 
   // Auto scroll chat box when streaming
@@ -43,8 +43,7 @@ export default function Home() {
   React.useEffect(() => {
     const chatContainer = messagesEndRef.current?.parentElement;
     if (!chatContainer) return;
-
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }, [messages]);
 
   async function handleVideoSubmit(formData: FormData) {
@@ -129,7 +128,7 @@ export default function Home() {
                         aria-label="YouTube video URL"
                         autoComplete="off"
                         spellCheck="false"
-                        className="w-full pr-24 sm:pr-32 h-12 text-sm sm:text-base [font-size:16px]"
+                        className="w-full pr-24 sm:pr-32 h-12 text-sm sm:text-base [font-size:14px]"
                         disabled={isPending}
                       />
                       <Button
@@ -157,10 +156,10 @@ export default function Home() {
           ) : (
             <div className="mx-auto w-full">
               <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b sm:static sm:bg-transparent sm:backdrop-blur-none sm:border-none">
-                <div className="container mx-auto px-4 py-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+                <div className="container mx-auto px-4 py-2 sm:py-4">
+                  <div className="flex flex-row sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                     <div
-                      className="flex-shrink-0 flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+                      className="flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => {
                         setMessages([]);
                         setError(null);
@@ -172,16 +171,16 @@ export default function Home() {
                         alt="yttldr logo"
                         width={64}
                         height={64}
-                        className="w-3 h-3 sm:w-8 sm:h-8 rounded"
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded"
                       />
-                      <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-2 text-xl sm:text-2xl text-center sm:text-left">
+                      <h1 className="font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent pb-1 text-xl sm:text-2xl">
                         yttldr
                       </h1>
                     </div>
 
                     <form
                       action={handleVideoSubmit}
-                      className="flex-1 sm:ml-6 max-w-md w-full"
+                      className="flex-1 max-w-md w-full"
                     >
                       <div className="relative">
                         <Input
@@ -189,7 +188,7 @@ export default function Home() {
                           name="url"
                           placeholder="Enter new YouTube URL..."
                           required
-                          className="w-full h-10 pr-12 [font-size:16px]"
+                          className="w-full h-10 pr-12 [font-size:14px]"
                           disabled={isPending}
                         />
                         <Button
@@ -221,16 +220,16 @@ export default function Home() {
           )}
 
           {videoData && (
-            <div className="grid lg:grid-cols-2 gap-4 md:gap-6 w-full mt-[100px] sm:mt-0">
-              <Card className="animate-in fade-in-0 duration-300 lg:h-[calc(100vh-200px)]">
-                <CardHeader className="bg-muted/50">
-                  <span className="flex items-center gap-2">
-                    <Youtube className="h-4 w-4 text-primary" />{" "}
+            <div className="grid lg:grid-cols-2 gap-2 sm:gap-4 md:gap-6 w-full h-[calc(100vh-7rem)] sm:h-[calc(100vh-14rem)] mt-[2rem] sm:mt-0">
+              <Card className="animate-in fade-in-0 duration-300">
+                <CardHeader className="bg-muted/50 px-4 py-2 sm:px-6 sm:py-4 flex flex-col justify-center h-full sm:h-auto">
+                  <span className="flex items-center gap-1 sm:gap-2">
+                    <Youtube className="h-4 w-4 sm:h-8 sm:w-8 text-primary" />{" "}
                     <Link
                       href={`https://www.youtube.com/watch?v=${videoData.videoId}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-semibold text-base sm:text-lg line-clamp-2 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+                      className="font-semibold text-md line-clamp-2  sm:text-lg overflow-hidden text-ellipsis w-[calc(100vw-6rem)] whitespace-nowrap bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
                     >
                       {videoData.title}
                     </Link>
@@ -245,7 +244,7 @@ export default function Home() {
                     <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                   </a>
                 </CardHeader>
-                <CardContent className="p-0">
+                <CardContent className="p-0 hidden sm:block">
                   <div className="aspect-video bg-black">
                     <iframe
                       title="YouTube video player"
@@ -260,21 +259,20 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card className="animate-in fade-in-0 duration-300 h-[calc(100vh-200px)]">
-                <CardHeader>
+              <Card className="animate-in fade-in-0 duration-300 h-[calc(100vh-14rem)]">
+                <CardHeader className="px-4 py-2 pt-4 sm:px-6 sm:py-4">
                   <CardTitle className="text-base sm:text-lg">
                     Summary
                   </CardTitle>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    Get an AI-generated summary, then ask follow-up questions to
-                    learn more.
+                  <p className="text-xs text-sm text-muted-foreground">
+                    Ask follow-up questions to learn more.
                   </p>
                 </CardHeader>
-                <CardContent className="relative h-[calc(100%-140px)]">
+                <CardContent className="relative h-[calc(100%-5rem)] px-4 py-2 sm:px-6 sm:py-4">
                   <div
-                    className={`flex flex-col space-y-4 h-[calc(100%-80px)] ${
+                    className={`flex flex-col space-y-4 h-[calc(100%-4rem)] ${
                       !isLoading ? "overflow-y-auto" : "overflow-hidden"
-                    } mb-16 px-1`}
+                    } px-1`}
                   >
                     {messages.slice(1).map((m) => (
                       <div
@@ -299,14 +297,14 @@ export default function Home() {
 
                   <form
                     onSubmit={handleChatSubmit}
-                    className="absolute bottom-4 left-4 right-4"
+                    className="absolute bottom-2 sm:bottom-8 left-4 right-4"
                   >
                     <div className="relative">
                       <Input
                         value={input}
                         onChange={handleChatInputChange}
                         placeholder="Ask a question..."
-                        className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm [font-size:16px]"
+                        className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm [font-size:14px]"
                         disabled={isLoading}
                       />
                       <Button
@@ -330,9 +328,9 @@ export default function Home() {
             </div>
           )}
 
-          <footer className="text-center text-xs sm:text-sm text-muted-foreground mt-4">
+          <footer className="text-center text-xs sm:text-sm text-muted-foreground mt-0 sm:mt-4">
             <p className="flex items-center justify-center gap-1">
-              Made in 1 day with AI 🤪 by
+              Made with AI 🤪 by
               <a
                 href="https://github.com/hassiebp"
                 target="_blank"
