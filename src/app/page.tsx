@@ -25,7 +25,7 @@ export default function Home() {
   const {
     messages,
     input,
-    handleInputChange,
+    handleInputChange: handleChatInputChange,
     handleSubmit: handleChatSubmit,
     setMessages,
     append,
@@ -39,11 +39,12 @@ export default function Home() {
 
   // Auto scroll chat box when streaming
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+
   React.useEffect(() => {
-    scrollToBottom();
+    const chatContainer = messagesEndRef.current?.parentElement;
+    if (!chatContainer) return;
+
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   async function handleVideoSubmit(formData: FormData) {
@@ -59,10 +60,15 @@ export default function Home() {
 
       const fetchResult = await fetch(`/api/video?url=${url}`);
 
-      if (!fetchResult.ok)
-        throw Error(
-          "Failed to process video. It likely has no transcript. Please try another video.",
-        );
+      if (!fetchResult.ok) {
+        const body = await fetchResult.json();
+        const errorMessage =
+          "error" in body
+            ? body.error
+            : "Failed to process video. Please try another.";
+
+        throw new Error(errorMessage);
+      }
 
       const result = (await fetchResult.json()) as GetVideoDataResponse;
       setVideoData(result);
@@ -298,7 +304,7 @@ export default function Home() {
                     <div className="relative">
                       <Input
                         value={input}
-                        onChange={handleInputChange}
+                        onChange={handleChatInputChange}
                         placeholder="Ask a question..."
                         className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm [font-size:16px]"
                         disabled={isLoading}
