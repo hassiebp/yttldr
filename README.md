@@ -14,7 +14,7 @@ Users can than chat back and forth with the LLM that maintains the transcript in
 - [Vercel AI SDK]() to handle LLM calls on the backend and chat UI state on the client
 - [Langfuse]() to host the main prompt and for observability into the apps performance
 
-# FAQ
+## FAQ
 
 ### Why am I not getting a summary of my video?🥺
 
