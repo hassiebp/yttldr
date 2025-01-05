@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# yttldr
 
-## Getting Started
+Simple YouTube video summarizer. Get LLM generated video summaries and ask questions to learn more.
 
-First, run the development server:
+## How it works
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The main user input is a valid Youtube URL. This can be both for the regular Youtube top-level domain or for Youtube sharing links (`youtu.be`).
+yttldr parses the youtube video ID, fetches the transcript, feeds it into the LLM context and requests a LLM generation for an initial summary.
+Users can than chat back and forth with the LLM that maintains the transcript in context.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [NextJS]() for fast bootstrapping of a fullstack app and easy deployment path
+- [Vercel AI SDK]() to handle LLM calls on the backend and chat UI state on the client
+- [Langfuse]() to host the main prompt and for observability into the apps performance
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# FAQ
 
-## Learn More
+### Why am I not getting a summary of my video?🥺
 
-To learn more about Next.js, take a look at the following resources:
+If you have provided a valid youtube URL, probably the parsing of the video ID failed or the video has no transcript. Please open an issue or drop me a DM, social links are in my profile.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Learn more
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out my [LinkedIn](https://linkedin.com/in/hassieb) or [X](https://x.com/hassiebpakzad) to learn more about building with LLMs.
