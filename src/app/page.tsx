@@ -330,15 +330,15 @@ export default function Home() {
 
           <footer className="text-center text-xs sm:text-sm text-muted-foreground mt-0 sm:mt-4">
             <p className="flex items-center justify-center gap-1">
-              Made with AI 🤪 by
+              Made in ~1 day with AI 🤖 —
               <a
-                href="https://github.com/hassiebp"
+                href="https://github.com/hassiebp/yttldr"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 hover:text-primary transition-colors"
               >
                 <Github className="h-3 w-3" />
-                hassiebp
+                Check out the source code on Github
               </a>
             </p>
           </footer>
