@@ -1,8 +1,7 @@
+import { langfuseExporter } from "@/observability/langfuse";
 import { registerOTel } from "@vercel/otel";
 
-export async function register() {
-  const { langfuseExporter } = await import("@/observability/langfuse");
-
+export function register() {
   registerOTel({
     serviceName: "yttldr",
     traceExporter: langfuseExporter,
