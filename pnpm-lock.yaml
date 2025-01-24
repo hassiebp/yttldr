@@ -45,11 +45,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       langfuse:
-        specifier: ^3.32.0
-        version: 3.32.0
+        specifier: ^3.32.2
+        version: 3.32.2
       langfuse-vercel:
-        specifier: ^3.32.0
-        version: 3.32.0(ai@4.0.22(react@19.0.0)(zod@3.24.1))
+        specifier: ^3.32.2
+        version: 3.32.2(ai@4.0.22(react@19.0.0)(zod@3.24.1))
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@19.0.0)
@@ -1911,18 +1911,18 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  langfuse-core@3.32.0:
-    resolution: {integrity: sha512-8wWnPtmhMBBgVicLR9SjQ1O29fgvTJyRDE5kaF8b908TvE0PXZmxs068GGhLCCdTMUGpU6WXqKRHTZfXAuIzXA==}
+  langfuse-core@3.32.2:
+    resolution: {integrity: sha512-iRYAfx39ZXA1+CKuMlObvkj2HzoYncxNKDYsNDwSge/bsapl5Yzxca8Q+g3STicEzc1Obs158EVs4xeNfycSdw==}
     engines: {node: '>=18'}
 
-  langfuse-vercel@3.32.0:
-    resolution: {integrity: sha512-NZr8a9tRTFd7aiutRImebx6ZHPdsuuJour45oEMaD00TjtYyBtEEsYM0n8Ce0uB92Bqs1SZImAYDz22a2uT3kQ==}
+  langfuse-vercel@3.32.2:
+    resolution: {integrity: sha512-Vem3p1BUAkWemp0sh3fOxtGxOrsI8nQiXRjrLmx6CDw/wJ2DD7+HWtdm5u97TcxWl7DW9U0zFhaVtEBTCIAEIQ==}
     engines: {node: '>=18'}
     peerDependencies:
       ai: '>=3.2.44'
 
-  langfuse@3.32.0:
-    resolution: {integrity: sha512-Qto8+CW8ZulNaZ/gn4JgVe5v/yeKbvMyvQ/s2DXO5bP5o1PmqE6YOCHQ3Uep6W94B8kpXUgOHg7ZS5Wg8Xljsw==}
+  langfuse@3.32.2:
+    resolution: {integrity: sha512-vtKs/MnK1vFhT9uRzqWY31I64GPNTje4uG+7rOa3A14dQiUb7r2qaFuZH038jp/NUm8kk8ktwLCJN/vEbgs21A==}
     engines: {node: '>=18'}
 
   language-subtag-registry@0.3.23:
@@ -4665,19 +4665,19 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  langfuse-core@3.32.0:
+  langfuse-core@3.32.2:
     dependencies:
       mustache: 4.2.0
 
-  langfuse-vercel@3.32.0(ai@4.0.22(react@19.0.0)(zod@3.24.1)):
+  langfuse-vercel@3.32.2(ai@4.0.22(react@19.0.0)(zod@3.24.1)):
     dependencies:
       ai: 4.0.22(react@19.0.0)(zod@3.24.1)
-      langfuse: 3.32.0
-      langfuse-core: 3.32.0
+      langfuse: 3.32.2
+      langfuse-core: 3.32.2
 
-  langfuse@3.32.0:
+  langfuse@3.32.2:
     dependencies:
-      langfuse-core: 3.32.0
+      langfuse-core: 3.32.2
 
   language-subtag-registry@0.3.23: {}
 
