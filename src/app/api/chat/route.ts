@@ -1,21 +1,22 @@
 import { openai } from "@ai-sdk/openai";
+import { LangfuseClient } from "@langfuse/client";
 import { streamText } from "ai";
-import { waitUntil } from "@vercel/functions";
-import { langfuseClient, langfuseExporter } from "@/observability/langfuse";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+const langfuseClient = new LangfuseClient();
+
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const prompt = await langfuseClient.getPrompt("summarizer", undefined, {
+  const prompt = await langfuseClient.prompt.get("summarizer", {
     type: "chat",
   });
 
   const result = streamText({
     model: openai("gpt-4o-2024-11-20"),
-    system: prompt.prompt[0].content,
+    system: prompt.compile()[0].content,
     messages,
     experimental_telemetry: {
       isEnabled: true,
@@ -26,6 +27,5 @@ export async function POST(req: Request) {
     },
   });
 
-  waitUntil(langfuseExporter.forceFlush());
   return result.toDataStreamResponse();
 }

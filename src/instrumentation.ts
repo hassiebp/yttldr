@@ -1,9 +1,14 @@
-import { langfuseExporter } from "@/observability/langfuse";
-import { registerOTel } from "@vercel/otel";
+import { NodeSDK } from "@opentelemetry/sdk-node";
+import { configureGlobalLogger } from "@langfuse/core";
+import { LangfuseSpanProcessor, ShouldExportSpan } from "@langfuse/otel";
 
-export function register() {
-  registerOTel({
-    serviceName: "yttldr",
-    traceExporter: langfuseExporter,
-  });
-}
+configureGlobalLogger({ level: 0 });
+
+const shouldExportSpan: ShouldExportSpan = ({ otelSpan }) =>
+  otelSpan.instrumentationScope.name !== "next.js";
+
+const sdk = new NodeSDK({
+  spanProcessors: [new LangfuseSpanProcessor({ shouldExportSpan })],
+});
+
+sdk.start();
