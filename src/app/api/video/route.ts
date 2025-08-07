@@ -1,15 +1,13 @@
+import { langfuseClient } from "@/langfuse";
 import { ChatMessage, GetVideoDataResponse } from "@/types";
 import {
   extractVideoId,
   getTranscript,
   getVideoMetadata,
 } from "@/utils/youtube";
-import { LangfuseClient } from "@langfuse/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const maxDuration = 30;
-
-const langfuse = new LangfuseClient();
 
 export async function GET(req: NextRequest) {
   try {
@@ -34,7 +32,7 @@ export async function GET(req: NextRequest) {
     if (!transcript) throw new Error("Could not get transcript");
 
     // Get initial summmarization user message
-    const prompt = await langfuse.prompt.get("summarizer", {
+    const prompt = await langfuseClient.prompt.get("summarizer", {
       type: "chat",
     });
     const initialMessages = prompt.compile({

@@ -1,11 +1,10 @@
+import { langfuseClient, langfuseSpanProcessor } from "@/langfuse";
 import { openai } from "@ai-sdk/openai";
-import { LangfuseClient } from "@langfuse/client";
 import { streamText } from "ai";
+import { waitUntil } from "@vercel/functions";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
-
-const langfuseClient = new LangfuseClient();
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
@@ -27,5 +26,6 @@ export async function POST(req: Request) {
     },
   });
 
+  waitUntil(langfuseSpanProcessor.forceFlush());
   return result.toDataStreamResponse();
 }
