@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
+import { nanoid } from "nanoid"
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -22,20 +23,21 @@ import { GetVideoDataResponse } from "@/types";
 import { isValidYouTubeUrl } from "@/utils/youtube";
 
 export default function Home() {
+  const [input, setInput] = React.useState<string>("")
+  const [isPending, setIsPending] = React.useState(false)
   const {
-    messages,
-    input,
-    handleInputChange: handleChatInputChange,
-    handleSubmit: handleChatSubmit,
     setMessages,
-    append,
-    isLoading,
+    messages,
+    sendMessage,
+    status,
+    error: aiError,
   } = useChat();
-  const [isPending, setIsPending] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [videoData, setVideoData] = React.useState<GetVideoDataResponse | null>(
     null,
   );
+
+  const isLoading = status === 'streaming' || status === 'submitted'
 
   // Auto scroll chat box when streaming
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -48,9 +50,9 @@ export default function Home() {
 
   async function handleVideoSubmit(formData: FormData) {
     try {
-      setIsPending(true);
+      setIsPending(true)
       setError(null);
-      setMessages([]);
+      setInput("")
 
       const url = formData.get("url") as string;
 
@@ -72,18 +74,19 @@ export default function Home() {
       const result = (await fetchResult.json()) as GetVideoDataResponse;
       setVideoData(result);
 
-      const message = {
-        ...result.summaryUserMessage,
-        id: crypto.randomUUID(),
-      };
-
-      // Trigger the summary generation
-      append(message);
+      sendMessage({ text: result.summaryUserMessage.content, metadata: { sessionId: nanoid() } })
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
-      setIsPending(false);
+      setIsPending(false)
     }
+  }
+
+  const handleChatSubmit = (e: FormEvent) => {
+    e.preventDefault()
+
+    sendMessage({ text: input })
+    setInput("")
   }
 
   return (
@@ -98,6 +101,7 @@ export default function Home() {
                   setMessages([]);
                   setError(null);
                   setVideoData(null);
+                  setInput("")
                 }}
               >
                 <Image
@@ -164,6 +168,7 @@ export default function Home() {
                         setMessages([]);
                         setError(null);
                         setVideoData(null);
+                        setInput("")
                       }}
                     >
                       <Image
@@ -215,7 +220,7 @@ export default function Home() {
               variant="destructive"
               className="animate-in fade-in-0 duration-300 max-w-2xl mx-auto w-full"
             >
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription>{error ?? aiError}</AlertDescription>
             </Alert>
           )}
 
@@ -270,25 +275,22 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="relative h-[calc(100%-5rem)] px-4 py-2 sm:px-6 sm:py-4">
                   <div
-                    className={`flex flex-col space-y-4 h-[calc(100%-4rem)] ${
-                      !isLoading ? "overflow-y-auto" : "overflow-hidden"
-                    } px-1`}
+                    className={`flex flex-col space-y-4 h-[calc(100%-4rem)] ${!isLoading ? "overflow-y-auto" : "overflow-hidden"
+                      } px-1`}
                   >
                     {messages.slice(1).map((m) => (
                       <div
                         key={m.id}
-                        className={`flex ${
-                          m.role === "user" ? "justify-end" : "justify-start"
-                        }`}
+                        className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
+                          }`}
                       >
                         <div
-                          className={`max-w-[90%] sm:max-w-[85%] rounded-lg px-3 py-2 sm:px-4 sm:py-2 text-sm whitespace-pre-wrap ${
-                            m.role === "user"
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted"
-                          }`}
+                          className={`max-w-[90%] sm:max-w-[85%] rounded-lg px-3 py-2 sm:px-4 sm:py-2 text-sm whitespace-pre-wrap ${m.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted"
+                            }`}
                         >
-                          <ReactMarkdown>{m.content}</ReactMarkdown>
+                          <ReactMarkdown>{m.parts.find(m => m.type === 'text')?.text ?? null}</ReactMarkdown>
                         </div>
                       </div>
                     ))}
@@ -302,7 +304,7 @@ export default function Home() {
                     <div className="relative">
                       <Input
                         value={input}
-                        onChange={handleChatInputChange}
+                        onChange={(e) => setInput(e.target.value)}
                         placeholder="Ask a question..."
                         className="w-full pr-20 sm:pr-24 h-10 sm:h-12 text-sm [font-size:16px]"
                         disabled={isLoading}

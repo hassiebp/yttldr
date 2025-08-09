@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
     const prompt = await langfuseClient.prompt.get("summarizer", {
       type: "chat",
     });
+
     const initialMessages = prompt.compile({
       title,
       author: authorName,
@@ -55,9 +56,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        error: `Failed to process video: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
+        error: `Failed to process video: ${error instanceof Error ? error.message : "Unknown error"}`,
       },
       { status: 500 },
     );
