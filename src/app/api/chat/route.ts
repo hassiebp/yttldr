@@ -1,4 +1,4 @@
-import { langfuseClient, langfuseSpanProcessor } from "@/langfuse";
+import { langfuseClient } from "@/langfuse";
 import { openai } from "@ai-sdk/openai";
 import { streamText, UIMessage, convertToModelMessages } from "ai";
 import z from "zod";
