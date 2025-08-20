@@ -1,7 +1,6 @@
 import { langfuseClient, langfuseSpanProcessor } from "@/langfuse";
 import { openai } from "@ai-sdk/openai";
 import { streamText, UIMessage, convertToModelMessages } from "ai";
-import { waitUntil } from "@vercel/functions";
 import z from "zod";
 
 // Allow streaming responses up to 30 seconds
