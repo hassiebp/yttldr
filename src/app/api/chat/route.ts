@@ -27,6 +27,10 @@ export async function POST(req: Request) {
   );
 
   const flush = async () => {
+    console.log("🚨 Flush requested. Waiting 100ms...");
+    await new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    });
     console.log("🚨 Flushing...");
     await langfuseSpanProcessor.forceFlush();
     console.log("🚨Flushed.");
@@ -48,6 +52,5 @@ export async function POST(req: Request) {
     },
   });
 
-  waitUntil(flush());
   return result.toUIMessageStreamResponse();
 }
