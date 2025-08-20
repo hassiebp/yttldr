@@ -25,21 +25,10 @@ export async function POST(req: Request) {
     null as string | null,
   );
 
-  const flush = async () => {
-    console.log("🚨 Flush requested. Waiting 100ms...");
-    await new Promise((resolve) => {
-      setTimeout(resolve, 100);
-    });
-    console.log("🚨 Flushing...");
-    await langfuseSpanProcessor.forceFlush();
-    console.log("🚨Flushed.");
-  };
-
   const result = streamText({
     model: openai("gpt-4o-2024-11-20"),
     system: prompt.compile()[0].content,
     messages: convertToModelMessages(messages),
-    onFinish: flush,
     experimental_telemetry: {
       isEnabled: true,
       functionId: "summarize-video",

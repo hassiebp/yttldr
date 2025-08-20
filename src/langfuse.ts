@@ -9,6 +9,7 @@ const shouldExportSpan: ShouldExportSpan = ({ otelSpan }) =>
 
 export const langfuseSpanProcessor = new LangfuseSpanProcessor({
   shouldExportSpan,
+  exportMode: "immediate",
 });
 
 export const langfuseClient = new LangfuseClient();
