@@ -7,7 +7,7 @@ import z from "zod";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-const MetadataSchema = z.object({ sessionId: z.string() })
+const MetadataSchema = z.object({ sessionId: z.string() });
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
@@ -16,27 +16,38 @@ export async function POST(req: Request) {
     type: "chat",
   });
 
-  const sessionId = messages.reduce((acc, m) => {
-    const parsed = MetadataSchema.safeParse(m.metadata)
-    if (parsed.success) return parsed.data.sessionId
+  const sessionId = messages.reduce(
+    (acc, m) => {
+      const parsed = MetadataSchema.safeParse(m.metadata);
+      if (parsed.success) return parsed.data.sessionId;
 
-    return acc
-  }, null as string | null)
+      return acc;
+    },
+    null as string | null,
+  );
+
+  const flush = async () => {
+    console.log("🚨 Flushing...");
+    await langfuseSpanProcessor.forceFlush();
+    console.log("🚨Flushed.");
+  };
 
   const result = streamText({
     model: openai("gpt-4o-2024-11-20"),
     system: prompt.compile()[0].content,
     messages: convertToModelMessages(messages),
+    onFinish: flush,
     experimental_telemetry: {
       isEnabled: true,
       functionId: "summarize-video",
       metadata: {
         langfusePrompt: prompt.toJSON(),
-        ...(sessionId ? { sessionId } : {})
+        updateLangfuseTrace: true,
+        ...(sessionId ? { sessionId } : {}),
       },
     },
   });
 
-  waitUntil(langfuseSpanProcessor.forceFlush());
+  waitUntil(flush());
   return result.toUIMessageStreamResponse();
 }

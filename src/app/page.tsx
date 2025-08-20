@@ -2,7 +2,7 @@
 
 import React, { FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
-import { nanoid } from "nanoid"
+import { nanoid } from "nanoid";
 
 import { useChat } from "@ai-sdk/react";
 import {
@@ -23,8 +23,8 @@ import { GetVideoDataResponse } from "@/types";
 import { isValidYouTubeUrl } from "@/utils/youtube";
 
 export default function Home() {
-  const [input, setInput] = React.useState<string>("")
-  const [isPending, setIsPending] = React.useState(false)
+  const [input, setInput] = React.useState<string>("");
+  const [isPending, setIsPending] = React.useState(false);
   const {
     setMessages,
     messages,
@@ -37,7 +37,7 @@ export default function Home() {
     null,
   );
 
-  const isLoading = status === 'streaming' || status === 'submitted'
+  const isLoading = status === "streaming" || status === "submitted";
 
   // Auto scroll chat box when streaming
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -50,9 +50,9 @@ export default function Home() {
 
   async function handleVideoSubmit(formData: FormData) {
     try {
-      setIsPending(true)
+      setIsPending(true);
       setError(null);
-      setInput("")
+      setInput("");
 
       const url = formData.get("url") as string;
 
@@ -74,20 +74,23 @@ export default function Home() {
       const result = (await fetchResult.json()) as GetVideoDataResponse;
       setVideoData(result);
 
-      sendMessage({ text: result.summaryUserMessage.content, metadata: { sessionId: nanoid() } })
+      sendMessage({
+        text: result.summaryUserMessage.content,
+        metadata: { sessionId: nanoid() },
+      });
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
-      setIsPending(false)
+      setIsPending(false);
     }
   }
 
   const handleChatSubmit = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    sendMessage({ text: input })
-    setInput("")
-  }
+    sendMessage({ text: input });
+    setInput("");
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted">
@@ -101,7 +104,7 @@ export default function Home() {
                   setMessages([]);
                   setError(null);
                   setVideoData(null);
-                  setInput("")
+                  setInput("");
                 }}
               >
                 <Image
@@ -168,7 +171,7 @@ export default function Home() {
                         setMessages([]);
                         setError(null);
                         setVideoData(null);
-                        setInput("")
+                        setInput("");
                       }}
                     >
                       <Image
@@ -275,22 +278,28 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="relative h-[calc(100%-5rem)] px-4 py-2 sm:px-6 sm:py-4">
                   <div
-                    className={`flex flex-col space-y-4 h-[calc(100%-4rem)] ${!isLoading ? "overflow-y-auto" : "overflow-hidden"
-                      } px-1`}
+                    className={`flex flex-col space-y-4 h-[calc(100%-4rem)] ${
+                      !isLoading ? "overflow-y-auto" : "overflow-hidden"
+                    } px-1`}
                   >
                     {messages.slice(1).map((m) => (
                       <div
                         key={m.id}
-                        className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
-                          }`}
+                        className={`flex ${
+                          m.role === "user" ? "justify-end" : "justify-start"
+                        }`}
                       >
                         <div
-                          className={`max-w-[90%] sm:max-w-[85%] rounded-lg px-3 py-2 sm:px-4 sm:py-2 text-sm whitespace-pre-wrap ${m.role === "user"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted"
-                            }`}
+                          className={`max-w-[90%] sm:max-w-[85%] rounded-lg px-3 py-2 sm:px-4 sm:py-2 text-sm whitespace-pre-wrap ${
+                            m.role === "user"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          }`}
                         >
-                          <ReactMarkdown>{m.parts.find(m => m.type === 'text')?.text ?? null}</ReactMarkdown>
+                          <ReactMarkdown>
+                            {m.parts.find((m) => m.type === "text")?.text ??
+                              null}
+                          </ReactMarkdown>
                         </div>
                       </div>
                     ))}
